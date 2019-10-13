@@ -28,8 +28,11 @@ def isbn_search(isbn):
     browser.close()
     return link_list[0]
 
-def get_people_num(url):
-    # url='http://book.douban.com/subject/6082808/?from=tag_all' # For Test
+def get_people_num(douban_link):
+    """
+    获取评价人数，未使用
+    """
+    # douban_link='http://book.douban.com/subject/6082808/?from=tag_all' # For Test
     g=requests.get(douban_link)
     soup=BeautifulSoup(g.content,"lxml")
 
@@ -56,9 +59,11 @@ def book_info(douban_link):
         # 用两次正则，一次去掉多余html代码，一次去掉制表换行等字符
         # .split(":")以：分割每个信息项目
         info_item = re.sub('[\f\n\r\t\v]','',re.sub('<([^>]+?)>','',item)).split(":")
-        info_temp = [] # 存放去“/”的item
+        info_temp = [] # 存放以“/”分隔的item
         for info_item_item in info_item:
-            info_temp += info_item_item.partition("/") # 将处理后的列表合并  
+            sprit = info_item_item.partition("/") # 以“/”分隔info_item_item
+            for sprit_item in sprit:
+                info_temp += sprit_item.partition("]") # 以“/”分隔sprit_item, 并将处理后的列表合并
 
         # info_temp 存储单项信息的列表
         # 以单项信息为操作单位去除空格
@@ -97,6 +102,7 @@ def main():
             print(info)
     else:
         print("只接收一个isbn码。")
+
 
 if __name__ == "__main__":
     main()
