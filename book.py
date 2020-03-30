@@ -1,4 +1,13 @@
 #-*- coding:utf-8 -*-
+
+"""
+    Author：万俟淋曦
+    Time：2019年10月13日11:00:28
+    Function：通过isbn查询书籍详细信息
+    Statement：仅供学习，勿作商用，如有违反，后果自负
+    P.S.：如有问题可以联系我，qq1055311345，好友验证：isbn
+"""
+
 import re
 import sys
 import urllib
@@ -44,8 +53,10 @@ def book_info(douban_link):
         输入：豆瓣书籍链接
         输出：书籍信息
     """
+    headers = {'User-Agent':'Mozilla/5.0 (Windows NT 10.0; Win64; x64) \
+        AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.149 Safari/537.36'}
     # 请求网址
-    g=requests.get(douban_link)
+    g=requests.get(douban_link,headers=headers)
     # 解析网页信息
     soup=BeautifulSoup(g.content,"lxml")
     # 由于书名和其他信息不在一起，单独处理书名
@@ -98,10 +109,12 @@ def main():
     elif len(sys.argv) == 2:
         douban_link = isbn_search(sys.argv[1])
         infos = book_info(douban_link)
+        book_info(douban_link)
         for info in infos:  
             print(info)
     else:
         print("只接收一个isbn码。")
+    # print(douban_link)
 
 
 if __name__ == "__main__":
