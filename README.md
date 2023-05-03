@@ -38,6 +38,8 @@ pip install -r requirements.txt
 
 需要根据使用的系统平台选择相应的浏览器驱动，其中 `executable_path` 是驱动路径。
 
+其中，由于linux浏览器驱动大小超过了github单个文件50MB的限制，使用时需要先解压。
+
 
 
 #### 3. 快速测试
