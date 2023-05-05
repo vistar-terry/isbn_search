@@ -73,3 +73,10 @@ browser = webdriver.PhantomJS()  # windows
 ```
 
 项目使用 `phantomjs` ，目前只测试了 `windows(win10/win11)` 和 `linux(Ubuntu20.04)` 系统，其他系统的 `phantomjs` 可以去主页下载 [https://phantomjs.org/download.html](https://phantomjs.org/download.html) ，但不保证可以使用。
+
+
+
+### 四、TO DO
+
+1. 优化查询效率
+2. 使用Chrome或Firefox浏览器
