@@ -115,7 +115,7 @@ def book_info(douban_link):
 
 def main():
     if len(sys.argv) == 1:
-        print("请输入isbn码。\n例如：python book.py 9787510046834")
+        print("请输入isbn码。\n例如：python book.py 9787121369421")
     elif len(sys.argv) == 2:
         douban_link = isbn_search(sys.argv[1])
         # print(douban_link)
