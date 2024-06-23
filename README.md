@@ -80,3 +80,9 @@ browser = webdriver.PhantomJS()  # windows
 
 1. 优化查询效率
 2. 使用Chrome或Firefox浏览器
+
+
+
+### 五、交流讨论
+
+![git](img/git.png)
