@@ -14,7 +14,6 @@
 
 1. book.py：脚本文件
 2. requirements.txt：依赖环境版本
-3. webdriver：浏览器驱动
 
 
 
@@ -30,19 +29,7 @@ pip install -r requirements.txt
 
 
 
-#### 2. 确认浏览器驱动路径
-
-`book.py` 代码中的
-
-![image-20230503195311156](img/image-20230503195311156.png)
-
-需要根据使用的系统平台选择相应的浏览器驱动，其中 `executable_path` 是驱动路径。
-
-其中，由于linux浏览器驱动大小超过了github单个文件50MB的限制，使用时需要先解压。
-
-
-
-#### 3. 快速测试
+#### 2. 快速测试
 
 在 `book.py` 同级目录执行以下命令：
 
@@ -56,30 +43,22 @@ python book.py 9787121369421
 
 
 
-### 三、注意
+### 三、更新日志
 
-需要注意以下两点：
-
-- ##### a. 为便于快速测试，浏览器驱动路径默认以`book.py`为参考的相对路径
-
-​	也就是说需要在 `book.py` 同级目录执行 `python book.py 9787121369421` 命令，如需在其他路径执行，可以将驱动路径加到系统环境变量中。
-
-- ##### b. 如将驱动路径加到系统环境变量中，上述浏览器驱动路径代码要修改为如下形式：
-
-```python
-# 创建浏览器对象
-browser = webdriver.PhantomJS()  # windows
-# browser = webdriver.PhantomJS()  # linux
-```
-
-项目使用 `phantomjs` ，目前只测试了 `windows(win10/win11)` 和 `linux(Ubuntu20.04)` 系统，其他系统的 `phantomjs` 可以去主页下载 [https://phantomjs.org/download.html](https://phantomjs.org/download.html) ，但不保证可以使用。
+-   2019年9月28日：通过isbn ID 搜索图书信息
+-   2020年3月30日：添加headers伪装真实浏览器
+-   2023年3月3日：
+    -   将PhantomJS浏览器驱动打包到仓库
+    -   添加评价人数
+-   2025年10月1日：
+    -   豆瓣网页结构改变，修改爬虫搜索逻辑，使用subject_id
+    -   使用 requests 库替代 PhantomJS 浏览器获取网页信息
 
 
 
 ### 四、TO DO
 
 1. 优化查询效率
-2. 使用Chrome或Firefox浏览器
 
 
 

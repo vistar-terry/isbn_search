@@ -10,12 +10,9 @@
 
 import re
 import sys
-import urllib
+import json
 import requests
-from lxml import etree
 from bs4 import BeautifulSoup
-from selenium import webdriver
-from selenium.webdriver import ChromeOptions
 
 
 def isbn_search(isbn):
@@ -23,25 +20,40 @@ def isbn_search(isbn):
         输入：isbn
         输出：豆瓣搜索结果的书籍链接
     """
-    # 创建浏览器对象
-    browser = webdriver.PhantomJS(executable_path=".\webdriver\phantomjs.exe")  # windows
-    # browser = webdriver.PhantomJS(executable_path="./webdriver/phantomjs_linux")  # linux
-    # option = ChromeOptions()
-    # option.add_argument("--headless")  # 指定无头模式
-    # browser = webdriver.Chrome(executable_path="..\webdriver\chromedriver.exe", options=option)
     # 请求网址
-    browser.get("https://book.douban.com/subject_search?search_text=" + isbn + "&cat=1001")
-    # 解析网页信息
-    soup = BeautifulSoup(browser.page_source, "lxml")
-    # 读取标签内容
-    tags = soup.select("#root > div > div > div > div > div > div > a")
-    # print(type(tags))
-    # print(browser.page_source)
-    # 正则查找href链接
-    link_list = re.findall(r"(?<=href=\").+?(?=\")|(?<=href=\').+?(?=\')", str(tags[0]))
-    # 关闭浏览器
-    browser.close()
-    return link_list[0]
+    url = "https://book.douban.com/subject_search?search_text=" + isbn + "&cat=1001"
+
+    headers = {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
+    }
+    
+    # 获取网页内容
+    response = requests.get(url, headers=headers)
+    soup = BeautifulSoup(response.text, 'html.parser')
+
+    # 解析subject_id
+    subject_id = get_subject_id(soup)
+
+    return "https://book.douban.com/subject/" + str(subject_id)
+
+
+def get_subject_id(soup):
+    # 查找包含 window.__DATA__ 的 script 标签
+    script = soup.find('script', string=re.compile('window\.__DATA__'))
+    
+    if script:
+        # 提取 JSON 数据
+        match = re.search(r'window\.__DATA__\s*=\s*({.*?});', script.string, re.DOTALL)
+        if match:
+            try:
+                data = json.loads(match.group(1))
+                if data.get('items') and len(data['items']) > 0:
+                    return data['items'][0]['id']
+            except json.JSONDecodeError:
+                pass
+    
+    return None
+
 
 def get_rating(soup):
     """
@@ -114,6 +126,7 @@ def book_info(douban_link):
 
 
 def main():
+    print()
     if len(sys.argv) == 1:
         print("请输入isbn码。\n例如：python book.py 9787121369421")
     elif len(sys.argv) == 2:
