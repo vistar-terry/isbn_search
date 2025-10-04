@@ -39,7 +39,7 @@ def isbn_search(isbn):
 
 def get_subject_id(soup):
     # 查找包含 window.__DATA__ 的 script 标签
-    script = soup.find('script', string=re.compile('window\.__DATA__'))
+    script = soup.find('script', string=re.compile(r'window\.__DATA__'))
     
     if script:
         # 提取 JSON 数据
@@ -90,7 +90,7 @@ def book_info(douban_link):
     for item in str(span_list).split('<br/>'): # 将信息按项目分割,每个item是一个信息项
         # 用两次正则，一次去掉多余html代码，一次去掉制表换行空格等字符
         # .split(":")以：分割每个信息项目
-        info_item = re.sub('[\f\n\r\t\v\s]','',re.sub('<([^>]+?)>','',item)).split(":")
+        info_item = re.sub(r'[\f\n\r\t\v\s]','',re.sub('<([^>]+?)>','',item)).split(":")
         info_temp = [] # 存放以“/”分隔的item
         for info_item_item in info_item:
             sprit = info_item_item.partition("/") # 以“/”分隔info_item_item
